@@ -17,18 +17,19 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.mario.appAdidas.Fragments.PantalonesFragment;
 import com.example.mario.appAdidas.Fragments.ZapatillasFragment;
 import com.example.mario.appAdidas.Fragments.SudaderasFragment;
 import com.example.mario.appAdidas.Items.Pantalones;
 import com.example.mario.appAdidas.Items.Sudaderas;
 import com.example.mario.appAdidas.Items.Zapatillas;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PaneActivity extends AppCompatActivity {
     private FragmentManager fm;
@@ -39,9 +40,8 @@ public class PaneActivity extends AppCompatActivity {
     private ListView list_zapas;
     private ListView list_suda;
     private ListView list_pants;
-    private ArrayList<Zapatillas> zapatillas;
-    private ArrayList<Pantalones> pantalones;
-    private ArrayList<Sudaderas> sudaderas;
+    private DataClothes ropa;
+
     // menu
     private ListView listView;
     private DrawerLayout drawerLayout;
@@ -51,6 +51,7 @@ public class PaneActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pane);
         // fragments
@@ -62,9 +63,7 @@ public class PaneActivity extends AppCompatActivity {
         list_zapas = (ListView) zapatillasFragment.getView().findViewById(R.id.list_zapatillas);
         list_pants = (ListView) pantalonesFragment.getView().findViewById(R.id.list_pantalones);
         list_suda = (ListView) sudaderasFragment.getView().findViewById(R.id.list_sudaderas);
-
-
-
+        ropa = new DataClothes();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -105,7 +104,7 @@ public class PaneActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView arg0, View arg1, int arg2, long arg3) {
-                Toast.makeText(PaneActivity.this, "Categoría " + menuItems.get(arg2), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(PaneActivity.this, "Categoría " + menuItems.get(arg2), Toast.LENGTH_SHORT).show();
                 drawerLayout.closeDrawers();
                 // 0 = profile, 1 = hombre, 2 = mujeres, 3 = niños
                 if(arg2==0){
@@ -113,28 +112,87 @@ public class PaneActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else if(arg2>0) {
-                    // **** hay que setear en el create la creacion de objetos de pantalones,
-                    // **** ( es el default nada mas entrar )
-                    // // aqui lo que se hace es cambiar los datos que se muestra a - hombre,
-                    // // mujer o niño - (dentro de la categoria de la ropa)
-                    /*
-                    if(arg2==1){
+                    // aqui lo que se hace es cambiar los datos que se muestran a - hombre,
+                    // mujer, niño - (dentro de la categoria de la ropa)
+                    ArrayList<Zapatillas> zapatillas_type = new ArrayList<Zapatillas>();
+                    ArrayList<Pantalones> pantalones_type = new ArrayList<Pantalones>();
 
+
+
+                    ArrayList<Sudaderas> sudaderas_type = new ArrayList<Sudaderas>();
+                    if(arg2==1){
+                        // set ropa hombre
+                        for (Zapatillas zap: ropa.zapatillas) {
+                            if (zap.getParaQuien().equals("Hombre")) {
+                                zapatillas_type.add(zap);
+                            }
+                        }
+                        for (Sudaderas sud: ropa.sudaderas) {
+                            if (sud.getParaQuien().equals("Hombre")) {
+                                sudaderas_type.add(sud);
+                            }
+                        }
+                        for (Pantalones pant: ropa.pantalones) {
+                            if (pant.getParaQuien().equals("Hombre")) {
+                                pantalones_type.add(pant);
+                            }
+                        }
                     } else if(arg2 ==2){
-                        for (Zapatillas zap: zapatillas) {
-                            // list_zapas add las que sean de = "Mujer"
+                        // set ropa mujer
+                        for (Zapatillas zap: ropa.zapatillas) {
+                            if (zap.getParaQuien().equals("Mujer")) {
+                                zapatillas_type.add(zap);
+                            }
+                        }
+                        for (Sudaderas sud: ropa.sudaderas) {
+                            if (sud.getParaQuien().equals("Mujer")) {
+                                sudaderas_type.add(sud);
+                            }
+                        }
+                        for (Pantalones pant: ropa.pantalones) {
+                            if (pant.getParaQuien().equals("Mujer")) {
+                                pantalones_type.add(pant);
+                            }
                         }
                     } else if(arg2==3) {
-
+                        // set ropa niño
+                        for (Zapatillas zap: ropa.zapatillas) {
+                            if (zap.getParaQuien().equals("Niños")) {
+                                zapatillas_type.add(zap);
+                            }
+                        }
+                        for (Sudaderas sud: ropa.sudaderas) {
+                            if (sud.getParaQuien().equals("Niños")) {
+                                sudaderas_type.add(sud);
+                            }
+                        }
+                        for (Pantalones pant: ropa.pantalones) {
+                            if (pant.getParaQuien().equals("Niños")) {
+                                pantalones_type.add(pant);
+                            }
+                        }
                     }
-                    */
+                    ArrayAdapter<Zapatillas> adapter_zapas = new ListAdapter(arg1.getContext(), zapatillas_type, 1);
+                    ArrayAdapter<Pantalones> adapter_pantalones = new ListAdapter(arg1.getContext(), pantalones_type, 2);
+                    ArrayAdapter<Sudaderas> adapter_sudaderas = new ListAdapter(arg1.getContext(), sudaderas_type, 3);
+                    list_zapas.setAdapter(adapter_zapas);
+                    list_suda.setAdapter(adapter_sudaderas);
+                    list_pants.setAdapter(adapter_pantalones);
                 }
             }
         });
-        // get data firebase - setear listas de prendas con sus datos
+        // get data firebase
+        // setRopa();
+        /*
+        ropa.pantalones.add(new Pantalones(2,null,"sdas1",2,"Hombre","DSFSDFFAFADDASDDASDSDASDASASADSA"));
+        ropa.pantalones.add(new Pantalones(1,null,"sdas2",1,"Hombre","DSFSDFFAFADDASDDASDSDASDASASADSA"));
+        ropa.pantalones.add(new Pantalones(3,null,"sdas1",3,"Mujer","DSFSDFFAFADDASDDASDSDASDASASADSA"));
+        ropa.pantalones.add(new Pantalones(4,null,"sdas2",4,"Mujer","DSFSDFFAFADDASDDASDSDASDASASADSA"));
+        ropa.pantalones.add(new Pantalones(5,null,"sdas1",5,"Niños","DSFSDFFAFADDASDDASDSDASDASASADSA"));
+        ropa.pantalones.add(new Pantalones(6,null,"sdas2",6,"Niños","DSFSDFFAFADDASDDASDSDASDASASADSA"));
+        */
 
         // data - ?
-
     }
 
     public void cambiaFragment(int fragment) {
@@ -158,4 +216,93 @@ public class PaneActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void setRopa(){
+        // setear ropa
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myref = database.getReference("ropa");
+        myref.child("pantalones").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    System.out.println("----------------------> "+child.getKey()+".Push Id ---" + child.getValue());
+                    /*Object obj = child;
+                    Pantalones pantalon = (Pantalones) obj;
+                    System.out.println(pantalon.toString());
+                    ropa.pantalones.add(pantalon);*/
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    public void inicializar(int firstSelected) {
+        ArrayList<Zapatillas> zapatillas_type = new ArrayList<Zapatillas>();
+        ArrayList<Pantalones> pantalones_type = new ArrayList<Pantalones>();
+        ArrayList<Sudaderas> sudaderas_type = new ArrayList<Sudaderas>();
+        if(firstSelected==1){
+            // set ropa hombre
+            for (Zapatillas zap: ropa.getZapatillas()) {
+                if (zap.getParaQuien().equals("Hombre")) {
+                    zapatillas_type.add(zap);
+                }
+            }
+            for (Sudaderas sud: ropa.getSudaderas()) {
+                if (sud.getParaQuien().equals("Hombre")) {
+                    sudaderas_type.add(sud);
+                }
+            }
+            for (Pantalones pant: ropa.getPantalones()) {
+                if (pant.getParaQuien().equals("Hombre")) {
+                    pantalones_type.add(pant);
+                }
+            }
+        } else if(firstSelected ==2){
+            // set ropa mujer
+            for (Zapatillas zap: ropa.getZapatillas()) {
+                if (zap.getParaQuien().equals("Mujer")) {
+                    zapatillas_type.add(zap);
+                }
+            }
+            for (Sudaderas sud: ropa.getSudaderas()) {
+                if (sud.getParaQuien().equals("Mujer")) {
+                    sudaderas_type.add(sud);
+                }
+            }
+            for (Pantalones pant: ropa.getPantalones()) {
+                if (pant.getParaQuien().equals("Mujer")) {
+                    pantalones_type.add(pant);
+                }
+            }
+        } else if(firstSelected==3) {
+            // set ropa niño
+            for (Zapatillas zap: ropa.getZapatillas()) {
+                if (zap.getParaQuien().equals("Niños")) {
+                    zapatillas_type.add(zap);
+                }
+            }
+            for (Sudaderas sud: ropa.getSudaderas()) {
+                if (sud.getParaQuien().equals("Niños")) {
+                    sudaderas_type.add(sud);
+                }
+            }
+            for (Pantalones pant: ropa.getPantalones()) {
+                if (pant.getParaQuien().equals("Niños")) {
+                    pantalones_type.add(pant);
+                }
+            }
+        }
+        ArrayAdapter<Zapatillas> adapter_zapas = new ListAdapter(this, zapatillas_type, 1);
+        ArrayAdapter<Pantalones> adapter_pantalones = new ListAdapter(this, pantalones_type, 2);
+        ArrayAdapter<Sudaderas> adapter_sudaderas = new ListAdapter(this, sudaderas_type, 3);
+        list_zapas.setAdapter(adapter_zapas);
+        list_suda.setAdapter(adapter_sudaderas);
+        list_pants.setAdapter(adapter_pantalones);
+    }
+
 }

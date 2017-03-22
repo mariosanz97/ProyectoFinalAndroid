@@ -12,13 +12,35 @@ public class Pantalones {
     String modelo;
     int precio;
     String paraQuien; // mujer hombre niño
+    String desc;
 
-    public Pantalones(int existencias, ImageView foto, String modelo, int precio, String paraQuien) {
+    @Override
+    public String toString() {
+        return "Pantalones{" +
+                "existencias=" + existencias +
+                ", foto=" + foto +
+                ", modelo='" + modelo + '\'' +
+                ", precio=" + precio +
+                ", paraQuien='" + paraQuien + '\'' +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
+
+    public Pantalones(int existencias, ImageView foto, String modelo, int precio, String paraQuien, String desc) {
         this.existencias = existencias;
         this.foto = foto;
         this.modelo = modelo;
         this.precio = precio;
         this.paraQuien = paraQuien;
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public int getExistencias() {

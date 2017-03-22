@@ -12,13 +12,23 @@ public class Sudaderas {
     String modelo;
     int precio;
     String paraQuien; // mujer hombre niño
+    String desc;
 
-    public Sudaderas(int existencias, ImageView foto, String modelo, int precio, String paraQuien) {
+    public Sudaderas(int existencias, ImageView foto, String modelo, int precio, String paraQuien, String desc) {
         this.existencias = existencias;
         this.foto = foto;
         this.modelo = modelo;
         this.precio = precio;
         this.paraQuien = paraQuien;
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public int getExistencias() {

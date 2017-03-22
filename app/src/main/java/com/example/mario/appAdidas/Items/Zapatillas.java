@@ -12,13 +12,15 @@ public class Zapatillas {
     String modelo;
     int precio;
     String paraQuien; // mujer hombre niño
+    String desc;
 
-    public Zapatillas(int existencias, ImageView foto, String modelo, int precio, String paraQuien) {
+    public Zapatillas(int existencias, ImageView foto, String modelo, int precio, String paraQuien, String desc) {
         this.existencias = existencias;
         this.foto = foto;
         this.modelo = modelo;
         this.precio = precio;
         this.paraQuien = paraQuien;
+        this.desc = desc;
     }
 
     public int getExistencias() {
@@ -59,5 +61,13 @@ public class Zapatillas {
 
     public void setParaQuien(String paraQuien) {
         this.paraQuien = paraQuien;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

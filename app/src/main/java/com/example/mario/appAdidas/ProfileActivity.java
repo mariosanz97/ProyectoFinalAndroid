@@ -15,6 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mario.appAdidas.Items.Pantalones;
+import com.example.mario.appAdidas.Items.Sudaderas;
+import com.example.mario.appAdidas.Items.Zapatillas;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -55,16 +58,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView arg0, View arg1, int arg2, long arg3) {
-                Toast.makeText(ProfileActivity.this, "Categoria " + menuItems.get(arg2), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(ProfileActivity.this, "Categoria " + menuItems.get(arg2), Toast.LENGTH_SHORT).show();
                 drawerLayout.closeDrawers();
-                Intent intent = new Intent();
                 if(arg2==0){
                     // nada porque es donde esta ahora el menu (profile)
                 } else if(arg2>0) {
-                    intent = new Intent(getApplicationContext(), PaneActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), PaneActivity.class);
+                    // Intermediario i = new Intermediario(arg2);
+                    startActivity(intent);
+                    finish();
                 }
-                startActivity(intent);
-                finish();
             }
         });
         // menu
