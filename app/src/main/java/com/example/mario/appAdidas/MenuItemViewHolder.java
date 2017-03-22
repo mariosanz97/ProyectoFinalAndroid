@@ -1,5 +1,6 @@
 package com.example.mario.appAdidas;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -8,4 +9,5 @@ import android.widget.TextView;
 
 public class MenuItemViewHolder {
     TextView tvNombre;
+    ImageView foto;
 }
