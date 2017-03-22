@@ -21,10 +21,14 @@ import android.widget.Toast;
 import com.example.mario.appAdidas.Fragments.PantalonesFragment;
 import com.example.mario.appAdidas.Fragments.ZapatillasFragment;
 import com.example.mario.appAdidas.Fragments.SudaderasFragment;
+import com.example.mario.appAdidas.Items.Pantalones;
+import com.example.mario.appAdidas.Items.Sudaderas;
+import com.example.mario.appAdidas.Items.Zapatillas;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PaneActivity extends AppCompatActivity {
     private FragmentManager fm;
@@ -32,26 +36,40 @@ public class PaneActivity extends AppCompatActivity {
     private SudaderasFragment sudaderasFragment;
     private PantalonesFragment pantalonesFragment;
     private FragmentTransaction transaction;
+    private ListView list_zapas;
+    private ListView list_suda;
+    private ListView list_pants;
+    private ArrayList<Zapatillas> zapatillas;
+    private ArrayList<Pantalones> pantalones;
+    private ArrayList<Sudaderas> sudaderas;
     // menu
-    ListView listView;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle toggle;
-    ArrayAdapter<String> adapter;
-    ArrayList<String> menuItems;
+    private ListView listView;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> menuItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pane);
+        // fragments
         fm = getSupportFragmentManager();
         pantalonesFragment = (PantalonesFragment) fm.findFragmentById(R.id.pantalones);
         zapatillasFragment = (ZapatillasFragment) fm.findFragmentById(R.id.zapatillas);
         sudaderasFragment = (SudaderasFragment) fm.findFragmentById(R.id.sudaderas);
+        // menu de navegacion
+        list_zapas = (ListView) zapatillasFragment.getView().findViewById(R.id.list_zapatillas);
+        list_pants = (ListView) pantalonesFragment.getView().findViewById(R.id.list_pantalones);
+        list_suda = (ListView) sudaderasFragment.getView().findViewById(R.id.list_sudaderas);
+
+
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // listener del menu de navegacion (cambia las vistas del tipo de ropa)
                 switch (item.getItemId()) {
                     case R.id.navigation_pantalones:
                         cambiaFragment(0);
@@ -87,24 +105,35 @@ public class PaneActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView arg0, View arg1, int arg2, long arg3) {
-                Toast.makeText(PaneActivity.this, "Item: " + menuItems.get(arg2), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaneActivity.this, "Categoría " + menuItems.get(arg2), Toast.LENGTH_SHORT).show();
                 drawerLayout.closeDrawers();
-                Intent intent = new Intent();
+                // 0 = profile, 1 = hombre, 2 = mujeres, 3 = niños
                 if(arg2==0){
-                    intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     startActivity(intent);
                     finish();
                 } else if(arg2>0) {
-                    // aqui lo que hay que hacer es cambiar los datos que se muestra de x a x (de mujer a niño, etc)
+                    // **** hay que setear en el create la creacion de objetos de pantalones,
+                    // **** ( es el default nada mas entrar )
+                    // // aqui lo que se hace es cambiar los datos que se muestra a - hombre,
+                    // // mujer o niño - (dentro de la categoria de la ropa)
+                    /*
+                    if(arg2==1){
+
+                    } else if(arg2 ==2){
+                        for (Zapatillas zap: zapatillas) {
+                            // list_zapas add las que sean de = "Mujer"
+                        }
+                    } else if(arg2==3) {
+
+                    }
+                    */
                 }
-
-
             }
         });
-        // get data firebase
+        // get data firebase - setear listas de prendas con sus datos
 
-
-        // data
+        // data - ?
 
     }
 

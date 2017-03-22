@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     tools:context="com.example.mario.appAdidas.Fragments.ZapatillasFragment">
 
-    <TextView
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="zapatillas aqui" />
+        android:id="@+id/list_zapatillas" />
 
 </FrameLayout>

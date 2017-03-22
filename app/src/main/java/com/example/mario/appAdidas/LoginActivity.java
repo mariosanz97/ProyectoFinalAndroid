@@ -18,8 +18,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-
-
     private Button btnlogin;
     private EditText email;
     private EditText password;
@@ -27,40 +25,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         firebaseAuth = FirebaseAuth.getInstance();
-
         if (firebaseAuth.getCurrentUser()!=null){
             finish();
             startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
         }
-
-
         btnlogin = (Button) findViewById(R.id.buttonlogin);
         email = (EditText) findViewById(R.id.editTextEmail);
         password = (EditText) findViewById(R.id.editTextPasword);
         textViewSignup = (TextView) findViewById(R.id.textViewSingin);
-
         progressDialog = new ProgressDialog(this);
-
         btnlogin.setOnClickListener(this);
         textViewSignup.setOnClickListener(this);
-
-
     }
 
 
     private void userLogin() {
         String email = this.email.getText().toString().trim();
         String password = this.password.getText().toString().trim();
-
-
-
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
             return;
@@ -69,10 +55,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
-
         progressDialog.setMessage("Login...");
         progressDialog.show();
-
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -89,16 +73,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
-
         if (v == btnlogin) {
             userLogin();
         }
-
         if (v == textViewSignup) {
             finish();
             startActivity(new Intent(this, RegistroActivity.class));
-
         }
     }
 }

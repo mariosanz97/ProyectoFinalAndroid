@@ -26,11 +26,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView textViewuserEmail;
     private Button btnLoguot;
     // menu
-    ListView listView;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle toggle;
-    ArrayAdapter<String> adapter;
-    ArrayList<String> menuItems;
+    private ListView listView;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> menuItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView arg0, View arg1, int arg2, long arg3) {
-                Toast.makeText(ProfileActivity.this, "Item: " + menuItems.get(arg2), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Categoria " + menuItems.get(arg2), Toast.LENGTH_SHORT).show();
                 drawerLayout.closeDrawers();
                 Intent intent = new Intent();
                 if(arg2==0){

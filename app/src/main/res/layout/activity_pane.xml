@@ -61,7 +61,7 @@
             android:layout_height="160dp"
             android:background="@color/colorPrimary"
             android:padding="10sp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/adidas_logo" />
 
         <ListView
             android:background="#ffffff"
