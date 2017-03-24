@@ -2,6 +2,11 @@ package com.example.mario.appAdidas;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +18,14 @@ import android.widget.Toast;
 import com.example.mario.appAdidas.Items.Pantalones;
 import com.example.mario.appAdidas.Items.Sudaderas;
 import com.example.mario.appAdidas.Items.Zapatillas;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -49,23 +61,54 @@ public class ListAdapter extends ArrayAdapter {
         // 1 = zapatillas, 2 = pantalones, 3 = sudaderas
         if(type==1){
             Zapatillas zapatilla = (Zapatillas) items.get(position);
- //               listAdapterHolder.image.setImageDrawable(zapatilla.getFoto().getDrawable());
-                listAdapterHolder.description.setText(zapatilla.getDesc());
+                listAdapterHolder.image = transferImage("zapatillas/" + zapatilla.getFoto());
+                listAdapterHolder.description.setText(zapatilla.getDescripcion());
                 listAdapterHolder.modelo.setText(zapatilla.getModelo());
-                listAdapterHolder.prize.setText(zapatilla.getPrecio()+"");
+                listAdapterHolder.prize.setText(zapatilla.getPrecio() + "");
         } else if(type==2) {
             Pantalones pantalon = (Pantalones) items.get(position);
-//                listAdapterHolder.image.setImageDrawable(pantalon.getFoto().getDrawable());
-                listAdapterHolder.description.setText(pantalon.getDesc());
+                listAdapterHolder.image = transferImage("pantalones/" + pantalon.getFoto());
+                listAdapterHolder.description.setText(pantalon.getDescripcion());
                 listAdapterHolder.modelo.setText(pantalon.getModelo());
-                listAdapterHolder.prize.setText(pantalon.getPrecio()+"");
+                listAdapterHolder.prize.setText(pantalon.getPrecio() + "");
         } else {
             Sudaderas sudadera = (Sudaderas) items.get(position);
-  //              listAdapterHolder.image.setImageDrawable(sudadera.getFoto().getDrawable());
-                listAdapterHolder.description.setText(sudadera.getDesc());
+                listAdapterHolder.image = transferImage("sudaderas/" + sudadera.getFoto());
+                listAdapterHolder.description.setText(sudadera.getDescripcion());
                 listAdapterHolder.modelo.setText(sudadera.getModelo());
-                listAdapterHolder.prize.setText(sudadera.getPrecio()+"");
+                listAdapterHolder.prize.setText(sudadera.getPrecio() + "");
         }
         return v;
+    }
+
+    public ImageView transferImage(String foto) {
+        ImageView imageView=null;
+        String photoPath = foto;
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://login-4ca8d.appspot.com");
+        storageRef.child(photoPath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                ImageView imageView = new ImageView(getContext());
+                InputStream is = null;
+                try {
+                    is = context.getContentResolver().openInputStream(uri);
+                    Bitmap bm = BitmapFactory.decodeStream(is);
+                    imageView.setImageBitmap(bm);
+                    is.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                System.out.println("---------> There is a image's path in database that doesn't match with any image in the storage <---------");
+            }
+        });
+        return imageView;
     }
 }

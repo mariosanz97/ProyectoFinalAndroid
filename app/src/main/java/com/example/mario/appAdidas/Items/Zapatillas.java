@@ -8,19 +8,21 @@ import android.widget.ImageView;
 
 public class Zapatillas {
     int existencias;
-    ImageView foto;
+    String foto;
     String modelo;
-    int precio;
-    String paraQuien; // mujer hombre niño
-    String desc;
+    double precio;
+    String para; // mujer hombre niño
+    String descripcion;
 
-    public Zapatillas(int existencias, ImageView foto, String modelo, int precio, String paraQuien, String desc) {
+    public Zapatillas(){}
+
+    public Zapatillas(int existencias, String foto, String modelo, double precio, String para, String descripcion) {
         this.existencias = existencias;
         this.foto = foto;
         this.modelo = modelo;
         this.precio = precio;
-        this.paraQuien = paraQuien;
-        this.desc = desc;
+        this.para = para;
+        this.descripcion = descripcion;
     }
 
     public int getExistencias() {
@@ -31,11 +33,11 @@ public class Zapatillas {
         this.existencias = existencias;
     }
 
-    public ImageView getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(ImageView foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 
@@ -47,27 +49,27 @@ public class Zapatillas {
         this.modelo = modelo;
     }
 
-    public int getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 
-    public String getParaQuien() {
-        return paraQuien;
+    public String getPara() {
+        return para;
     }
 
-    public void setParaQuien(String paraQuien) {
-        this.paraQuien = paraQuien;
+    public void setPara(String para) {
+        this.para = para;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }
