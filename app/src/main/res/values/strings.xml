@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Adidas</string>
+    <string name="title_activity_login">Adidas</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="close">Close</string>
+    <string name="open">Open</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="key">AIzaSyBSRhbCmFcyD6U-L7fvHxMNUqIsBjiGhAo</string>
+
+    <string name="Pantalones">Pantalones</string>
+    <string name="Sudaderas">Sudaderas</string>
+    <string name="Zapatillas">Zapatillas</string>
+</resources>

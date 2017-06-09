@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.mario.appAdidas">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/adidas"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegistroActivity" />
+        <activity android:name=".PerfilActivity" />
+        <activity
+            android:name=".configActivity"
+            android:parentActivityName=".PerfilActivity" />
+        <activity android:name=".HombresF.HombresActivity" />
+        <activity android:name=".MujeresF.MujeresActivity" />
+        <activity android:name=".NinosF.NinosActivity" />
+        <activity
+            android:name=".DetallesRopaActivity.DetallesActivity"
+            android:parentActivityName=".PerfilActivity" />
+        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".ImageActivity"></activity>
+        <activity android:name=".pedidos.contactActivity"></activity>
+        <activity android:name=".Localizacion"></activity>
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/key" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+
+</manifest>

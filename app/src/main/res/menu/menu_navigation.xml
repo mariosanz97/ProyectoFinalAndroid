@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Pantalones"
+        android:icon="@mipmap/trouser"
+        android:title="@string/Pantalones" />
+
+    <item
+        android:id="@+id/Sudaderas"
+        android:icon="@mipmap/jumper"
+    android:title="@string/Sudaderas" />
+
+    <item
+        android:id="@+id/Zapatillas"
+        android:icon="@mipmap/trainers"
+        android:title="@string/Zapatillas" />
+
+
+</menu>
